@@ -10,7 +10,7 @@ import sys
 import glob
 import os
 import numpy as np
-from utils import vanishing_point, vh_dist, vp
+from utils import vh_dist, vp
 
 
 class ImageViewer(QMainWindow):
@@ -95,6 +95,13 @@ class ImageViewer(QMainWindow):
         h2box.addWidget(self.lb_height)
         h2box.addWidget(self.lineedit)
 
+        # self.button_zoom_in = QPushButton('Zoom IN', self)
+        # self.button_zoom_in.clicked.connect(self.on_zoom_in)
+        # self.button_zoom_out = QPushButton('Zoom OUT', self)
+        # self.button_zoom_out.clicked.connect(self.on_zoom_out)
+        # h2box.addWidget(self.button_zoom_in)
+        # h2box.addWidget(self.button_zoom_out)
+
         vwidget = QWidget()
         vbox = QVBoxLayout(vwidget)
         vbox.addWidget(hwidget)
@@ -135,6 +142,19 @@ class ImageViewer(QMainWindow):
         self.mode_measure_v = False
 
         self.dist = 0
+
+
+    # def on_zoom_in(self, event):
+    #     self.height += 100
+    #     self.resize_image()
+    #
+    # def on_zoom_out(self, event):
+    #     self.height -= 100
+    #     self.resize_image()
+    #
+    # def resize_image(self):
+    #     scaled_pixmap = self.pixmap.scaledToHeight(self.height)
+    #     self.imageLabel.setPixmap(scaled_pixmap)
 
     def draw_Line(self, start, end):
         image = cv2.imread(self.img_list[self.pos])
@@ -280,7 +300,8 @@ class ImageViewer(QMainWindow):
             QMessageBox.information(self, "Image Viewer",
                                     "Cannot load %s." % fileName)
             return
-        self.imageLabel.setPixmap(QPixmap.fromImage(image))
+        self.pixmap = QPixmap.fromImage(image)
+        self.imageLabel.setPixmap(self.pixmap)
         self.fitToWindowAct.setEnabled(True)
         self.updateActions()
         if not self.fitToWindowAct.isChecked():
